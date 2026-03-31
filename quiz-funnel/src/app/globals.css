@@ -1,0 +1,22 @@
+@config "../../tailwind.config.ts";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: #0A0A0A;
+    color: #C8C4BC;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: #C8352A;
+    color: #F0EDE6;
+  }
+}
