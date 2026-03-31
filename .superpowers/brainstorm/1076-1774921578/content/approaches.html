@@ -1,0 +1,72 @@
+<h2>Architecture Approaches</h2>
+<p class="subtitle">How should the Next.js quiz funnel be structured?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Single-Page App (SPA) Feel</h3>
+      <p><strong>One page, all client-side.</strong> The entire quiz lives in a single Next.js page (<code>/</code>). A React state machine manages the flow: landing → questions → loading → teaser → email gate → results. Smooth transitions between steps, no page reloads. The only server interaction is the <code>/api/capture-email</code> route that hits Klaviyo.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Fastest perceived performance — no navigation between steps</li>
+          <li>Smooth CSS transitions between quiz states</li>
+          <li>Simplest routing — one page component</li>
+          <li>Easy to add progress animations</li>
+          <li>All scoring logic stays in one place</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>Larger initial JS bundle (all questions loaded upfront)</li>
+          <li>No shareable URLs for individual steps</li>
+          <li>Browser back button needs manual handling</li>
+          <li>SEO only applies to landing state</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Multi-Page with Dynamic Routes</h3>
+      <p><strong>Separate pages per step.</strong> Each quiz step is its own Next.js route: <code>/</code> (landing), <code>/quiz/1</code> through <code>/quiz/6</code>, <code>/loading</code>, <code>/result/[type]</code>. Scores passed via URL params or cookies. Each page is server-rendered.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Each step has a shareable URL</li>
+          <li>Browser back/forward works natively</li>
+          <li>Smaller per-page bundles</li>
+          <li>Can track analytics per page</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>Page transitions feel heavier — flash of loading</li>
+          <li>Score state management across pages is awkward</li>
+          <li>More files to manage (10+ page components)</li>
+          <li>Harder to animate between questions smoothly</li>
+          <li>Over-engineered for a linear funnel</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Hybrid: SPA Quiz + Server Result Page</h3>
+      <p><strong>Best of both.</strong> The landing page and quiz (questions 1–6 + loading + teaser + email gate) are a single client-side SPA flow on <code>/</code>. After email capture, redirect to <code>/result/[type]</code> — a server-rendered page with full SEO, shareable URL, and the complete breakdown. This is the only page that needs its own route.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Smooth quiz experience (no page loads during questions)</li>
+          <li>Result page is shareable and SEO-friendly</li>
+          <li>Clean separation: quiz flow vs. result content</li>
+          <li>Result page can be revisited without retaking quiz</li>
+          <li>Natural architecture boundary</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>Slightly more complex than pure SPA</li>
+          <li>Need to pass result type between pages (URL param)</li>
+        </ul></div>
+      </div>
+      <p style="margin-top: 12px; padding: 8px 12px; border-left: 2px solid #C8352A; font-size: 13px; opacity: 0.85;"><strong>⬆ Recommended.</strong> The quiz is a linear funnel — it should feel like one continuous flow. But the result page has real content worth indexing and sharing.</p>
+    </div>
+  </div>
+</div>
