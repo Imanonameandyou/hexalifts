@@ -1344,7 +1344,7 @@ git commit -m "feat: wire up quiz SPA state machine on home page"
 Create `quiz-funnel/src/lib/klaviyo.ts`:
 
 ```ts
-const KLAVIYO_API_URL = "https://a.]klaviyo.com/api";
+const KLAVIYO_API_URL = "https://a.klaviyo.com/api";
 
 function headers() {
   return {
